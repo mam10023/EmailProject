@@ -9,4 +9,16 @@ public class Email {
         this.emailContent = emailContent;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public String getEmailContent() {
+        return emailContent;
+    }
+
 }
