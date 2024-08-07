@@ -4,19 +4,22 @@ import java.util.List;
 
 public class FileHandler {
 
+    private static final String EMAIL_FILE = "emails.txt";
+    private static final String USERS_FILE = "users.txt";
+
     public void saveEmail(String userEmail, Email email) throws IOException {
-        try (PrintWriter out = new PrintWriter(new FileWriter(userEmail + "emails.txt", true))) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(userEmail + EMAIL_FILE, true))) {
             out.println("Sender: " + email.getSender() + " | Recipient: " + email.getRecipient() + " | "
                     + email.getSubject() + ": " + email.getEmailContent());
         }
     }
 
     public List<Email> readEmail(String userEmail) throws IOException {
-        List <Email> emails = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(userEmail + "emails.txt"))) {
+        List<Email> emails = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(userEmail + EMAIL_FILE))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split("," 4);
+                String[] parts = line.split(",");
                 if (parts.length == 4) {
                     String sender = parts[0];
                     String recipient = parts[1];
@@ -29,5 +32,41 @@ public class FileHandler {
             }
         }
         return emails;
+    }
+
+    public void removeEmail(String userEmail, Email email) throws IOException {
+        List<Email> emails = readEmail(userEmail);
+        emails.removeIf(e -> e.getSender().equals(email.getSender()) && e.getRecipient().equals(email.getRecipient())
+                && e.getSubject().equals(email.getSubject()) && e.getEmailContent().equals(email.getEmailContent()));
+        try (PrintWriter out = new PrintWriter(new FileWriter(userEmail + EMAIL_FILE))) {
+            for (Email e : emails) {
+                out.println(
+                        e.getSender() + ", " + e.getRecipient() + ", " + e.getSubject() + ", " + e.getEmailContent());
+            }
+        }
+    }
+
+    // not sure if we need this; may use for login
+    public void saveUser(User user) throws IOException {
+        try (PrintWriter out = new PrintWriter(new FileWriter(USERS_FILE, true))) {
+            out.println(user.getEmail() + ", " + user.getPassword());
+        }
+    }
+
+    public List<User> readUsers() throws IOException {
+        List<User> users = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String email = parts[0];
+                    String pass = parts[1];
+                } else {
+                    System.err.println("error");
+                }
+            }
+        }
+        return users;
     }
 }
