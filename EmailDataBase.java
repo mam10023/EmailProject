@@ -80,4 +80,9 @@ public class EmailDataBase {
         return inbox;
     }
 
+    public void deleteEmail(String userEmail, Email emailDel) {
+        emails.remove(emailDel);
+        saveUserEmails(userEmail);
+    }
+
 }
