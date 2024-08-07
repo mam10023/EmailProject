@@ -4,7 +4,7 @@ public class Email {
     private String recipient;
     private String emailContent;
 
-    public Email(String sender, String subject, String recipient, String emailContent) {
+    public Email(String sender, String recipient, String subject, String emailContent) {
         this.sender = sender;
         this.subject = subject;
         this.recipient = recipient;
