@@ -31,6 +31,15 @@ public class EmailDataBase {
         return false;
     }
 
+    public User getUser(String email) {
+        for (User username : users) {
+            if (username.getEmail().equals(email)) {
+                return username;
+            }
+        }
+        return null;
+    }
+
     public void logout() {
         loggedInUser = null;
     }
@@ -51,7 +60,24 @@ public class EmailDataBase {
     public void saveUserEmails(String userEmail) {
         try {
             fileHandler.saveEmail(userEmail, emails);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void sendEmail(Email email) {
+        emails.add(email);
+        saveUserEmails(email.getRecipient());
+    }
+
+    public List<Email> getInbox(String userEmail) {
+        List<Email> inbox = new ArrayList<>();
+        for (Email e : emails) {
+            if (e.getRecipient().equals(userEmail)) {
+                inbox.add(e);
+            }
+        }
+        return inbox;
     }
 
 }
