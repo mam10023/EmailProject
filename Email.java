@@ -1,12 +1,18 @@
 public class Email {
+    private String sender;
     private String subject;
     private String recipient;
     private String emailContent;
 
-    public Email(String subject, String recipient, String emailContent) {
+    public Email(String sender, String subject, String recipient, String emailContent) {
+        this.sender = sender;
         this.subject = subject;
         this.recipient = recipient;
         this.emailContent = emailContent;
+    }
+
+    public String getSender() {
+        return sender;
     }
 
     public String getSubject() {
