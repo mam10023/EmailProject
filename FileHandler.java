@@ -7,10 +7,12 @@ public class FileHandler {
     private static final String EMAIL_FILE = "emails.txt";
     private static final String USERS_FILE = "users.txt";
 
-    public void saveEmail(String userEmail, Email email) throws IOException {
+    public void saveEmail(String userEmail, List<Email> emails) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(userEmail + EMAIL_FILE, true))) {
-            out.println("Sender: " + email.getSender() + " | Recipient: " + email.getRecipient() + " | "
-                    + email.getSubject() + ": " + email.getEmailContent());
+            for (Email e : emails) {
+                out.println(
+                        e.getSender() + ", " + e.getRecipient() + ", " + e.getSubject() + ", " + e.getEmailContent());
+            }
         }
     }
 
@@ -62,6 +64,7 @@ public class FileHandler {
                 if (parts.length == 2) {
                     String email = parts[0];
                     String pass = parts[1];
+                    users.add(new User(email, pass));
                 } else {
                     System.err.println("error");
                 }
