@@ -3,16 +3,16 @@ public class User {
     private String email;
     private String password;
 
-    private User(String email, String password) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    private String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    private String getPassword() {
+    public String getPassword() {
         return password;
     }
 
