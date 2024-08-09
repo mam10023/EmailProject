@@ -4,8 +4,7 @@ import java.util.List;
 
 public class FileHandler {
 
-    private static final String EMAIL_FILE = "emails.txt";
-    private static final String USERS_FILE = "users.txt";
+    private static final String EMAIL_DIR = "emails";
 
     public void saveEmail(String userEmail, List<Email> emails) throws IOException {
         try (PrintWriter out = new PrintWriter(new FileWriter(userEmail + EMAIL_FILE, true))) {
