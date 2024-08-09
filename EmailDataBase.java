@@ -42,20 +42,6 @@ public class EmailDataBase {
     }
 
     public void sendEmail(Email email) {
-        /*
-         * emails.add(email);
-         * 
-         * System.out.println("Sending email: " + email.getSubject() + " to " +
-         * email.getRecipient());
-         * 
-         * saveUserEmails();
-         * 
-         * try {
-         * fileHandler.saveEmail(email.getRecipient(), emails); // Save for recipient
-         * } catch (IOException e) {
-         * e.printStackTrace();
-         * }
-         */
 
         System.out.println("Sending email: " + email.getSubject() + " to " + email.getRecipient());
         EmailDataBase recipientEmailDB = new EmailDataBase(email.getRecipient());
