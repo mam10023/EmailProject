@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,18 +45,26 @@ public class FileHandler {
 
     public List<Email> readEmail(String userEmail) throws IOException {
         List<Email> emails = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(userEmail + EMAIL_FILE))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 4) {
-                    String sender = parts[0];
-                    String recipient = parts[1];
-                    String subject = parts[2];
-                    String emailContent = parts[3];
-                    emails.add(new Email(sender, recipient, subject, emailContent));
-                } else {
-                    System.err.println("error");
+        Path userDir = Paths.get(EMAIL_DIR, userEmail);
+        if (Files.exists(userDir)) {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(userDir)) {
+                for (Path entry : stream) {
+                    if (Files.isRegularFile(entry)) {
+
+                        System.out.println("Reading email from: " + entry.toString());
+
+                        try (BufferedReader reader = Files.newBufferedReader(entry)) {
+                            String sender = reader.readLine().split(": ")[1];
+                            String recipient = reader.readLine().split(": ")[1];
+                            String subject = reader.readLine().split(": ")[1];
+                            StringBuilder emailContent = new StringBuilder();
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                emailContent.append(line).append("\n");
+                            }
+                            emails.add(new Email(sender, recipient, subject, emailContent.toString()));
+                        }
+                    }
                 }
             }
         }
