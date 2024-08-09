@@ -86,28 +86,4 @@ public class FileHandler {
         }
     }
 
-    // not sure if we need this; may use for login
-    public void saveUser(User user) throws IOException {
-        try (PrintWriter out = new PrintWriter(new FileWriter(USERS_FILE, true))) {
-            out.println(user.getEmail() + ", " + user.getPassword());
-        }
-    }
-
-    public List<User> readUsers() throws IOException {
-        List<User> users = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 2) {
-                    String email = parts[0];
-                    String pass = parts[1];
-                    users.add(new User(email, pass));
-                } else {
-                    System.err.println("error");
-                }
-            }
-        }
-        return users;
-    }
 }
