@@ -4,70 +4,67 @@ import java.util.List;
 
 public class EmailDataBase {
 
-    private List<User> users;
     private List<Email> emails;
     private FileHandler fileHandler;
-    private User loggedInUser;
+    private String loggedInUser;
 
-    public EmailDataBase() {
+    public EmailDataBase(String sender) {
         fileHandler = new FileHandler();
-        try {
-            users = fileHandler.readUsers();
-        } catch (IOException e) {
-            users = new ArrayList<>();
-            e.printStackTrace(); // **
-        }
         emails = new ArrayList<>();
-        loggedInUser = null;
-    }
-
-    public boolean login(String email, String password) {
-        User user = getUser(email);
-        if (user != null && user.getPassword().equals(password)) {
-            loggedInUser = user;
-            loadUserEmails(email);
-            return true;
-        }
-        return false;
-    }
-
-    public User getUser(String email) {
-        for (User username : users) {
-            if (username.getEmail().equals(email)) {
-                return username;
-            }
-        }
-        return null;
-    }
-
-    public void logout() {
-        loggedInUser = null;
-    }
-
-    public User getLoggedInUser() {
-        return loggedInUser;
+        loggedInUser = sender;
     }
 
     public void loadUserEmails(String userEmail) {
+        loggedInUser = userEmail;
         try {
             emails = fileHandler.readEmail(userEmail);
+
+            System.out.println("Loaded " + emails.size() + " emails for user: " + loggedInUser);
+
         } catch (IOException e) {
             emails = new ArrayList<>();
             e.printStackTrace();
         }
     }
 
-    public void saveUserEmails(String userEmail) {
+    public void saveUserEmails() {
+        if (loggedInUser == null) {
+            throw new IllegalStateException("No user is logged in.");
+        }
         try {
-            fileHandler.saveEmail(userEmail, emails);
+            fileHandler.saveEmail(loggedInUser, emails);
+
+            System.out.println("Saved " + emails.size() + " emails for user: " + loggedInUser);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void sendEmail(Email email) {
-        emails.add(email);
-        saveUserEmails(email.getRecipient());
+        /*
+         * emails.add(email);
+         * 
+         * System.out.println("Sending email: " + email.getSubject() + " to " +
+         * email.getRecipient());
+         * 
+         * saveUserEmails();
+         * 
+         * try {
+         * fileHandler.saveEmail(email.getRecipient(), emails); // Save for recipient
+         * } catch (IOException e) {
+         * e.printStackTrace();
+         * }
+         */
+
+        System.out.println("Sending email: " + email.getSubject() + " to " + email.getRecipient());
+        EmailDataBase recipientEmailDB = new EmailDataBase(email.getRecipient());
+        recipientEmailDB.loadUserEmails(email.getRecipient());
+        recipientEmailDB.emails.add(email);
+        System.out.println("Saving email to recipient: " + email.getRecipient());
+        recipientEmailDB.saveUserEmails();
+        System.out.println("Email saved successfully.");
+
     }
 
     public List<Email> getInbox(String userEmail) {
@@ -77,12 +74,18 @@ public class EmailDataBase {
                 inbox.add(e);
             }
         }
+
+        System.out.println("Inbox contains " + inbox.size() + " emails for user: " + loggedInUser);
+
         return inbox;
     }
 
     public void deleteEmail(String userEmail, Email emailDel) {
         emails.remove(emailDel);
-        saveUserEmails(userEmail);
+
+        System.out.println("Deleting email: " + emailDel.getSubject());
+
+        saveUserEmails();
     }
 
 }
