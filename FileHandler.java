@@ -73,12 +73,15 @@ public class FileHandler {
 
     public void removeEmail(String userEmail, Email email) throws IOException {
         List<Email> emails = readEmail(userEmail);
-        emails.removeIf(e -> e.getSender().equals(email.getSender()) && e.getRecipient().equals(email.getRecipient())
-                && e.getSubject().equals(email.getSubject()) && e.getEmailContent().equals(email.getEmailContent()));
-        try (PrintWriter out = new PrintWriter(new FileWriter(userEmail + EMAIL_FILE))) {
-            for (Email e : emails) {
-                out.println(
-                        e.getSender() + ", " + e.getRecipient() + ", " + e.getSubject() + ", " + e.getEmailContent());
+        Path userDir = Paths.get(EMAIL_DIR, userEmail);
+        for (Email e : emails) {
+            if (e.equals(email)) {
+                Path emailFile = userDir.resolve(email.getSubject() + ".txt");
+
+                System.out.println("Deleting email from: " + emailFile.toString());
+
+                Files.delete(emailFile);
+                break;
             }
         }
     }
