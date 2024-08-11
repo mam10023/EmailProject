@@ -3,6 +3,7 @@ public class Email {
     private String subject;
     private String recipient;
     private String emailContent;
+    private String testingHaley;
 
     public Email(String sender, String recipient, String subject, String emailContent) {
         this.sender = sender;
