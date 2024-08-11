@@ -8,12 +8,12 @@ The system includes various features typical to any email client such as login, 
 
 ## Instructions
 
-When logging in, use this information:__
-Account 1 (email address, password): guest1@gmail.com, OOP1__
-Account 2 (email address, password): guest2@nyu.edu, OOP2__
+When logging in, use this information:\
+Account 1 (email address, password): guest1@gmail.com, OOP1\
+Account 2 (email address, password): guest2@nyu.edu, OOP2\
 
 ## Authors
  
-Haley Hobbs (email: hkh9725@nyu.edu)__
-Maya Mabry (email: mam10023@nyu.edu)__
-Suhan Suresh (email: ss15182@nyu.edu)__
+Haley Hobbs (email: hkh9725@nyu.edu)\
+Maya Mabry (email: mam10023@nyu.edu)\
+Suhan Suresh (email: ss15182@nyu.edu)\
